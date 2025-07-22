@@ -1,17 +1,56 @@
-<script>
-  function startTest() {
-    const status = document.getElementById("status");
-    status.innerText = "⏳ MSM: بدأ الضغط على الذاكرة...";
-    let total = 0;
-    try {
-      for (let i = 0; i < 50000; i++) {
-        let spray = new Uint32Array(2048);
-        spray.fill(i);
-        total += spray[0];
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>MSM WebKit Exploit v2</title>
+    <meta charset="UTF-8" />
+    <style>
+      body {
+        background-color: black;
+        color: lime;
+        font-family: monospace;
+        text-align: center;
+        padding-top: 80px;
       }
-      status.innerText = "✅ MSM: السكربت اكتمل – راقب الأداء!";
-    } catch (e) {
-      status.innerText = "💥 MSM: حدث خطأ – احتمال خلل!";
-    }
-  }
-</script>
+      button {
+        padding: 14px 28px;
+        background-color: crimson;
+        color: white;
+        border: none;
+        font-size: 22px;
+        cursor: pointer;
+        margin-top: 20px;
+      }
+      #status {
+        margin-top: 30px;
+        font-size: 18px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>🔥 MSM WebKit Exploit v2 – اختبار الضغط الحقيقي</h1>
+    <button onclick="startTest()">ابدأ الاختبار الآن</button>
+    <p id="status">جاهز للتنفيذ...</p>
+
+    <script>
+      function startTest() {
+        const status = document.getElementById("status");
+        status.innerText = "⏳ MSM: بدأ الضغط على الذاكرة...";
+        let total = 0;
+        let start = performance.now();
+
+        try {
+          for (let i = 0; i < 60000; i++) {
+            let spray = new Uint32Array(4096);
+            spray.fill(i);
+            total += spray[0];
+          }
+          let end = performance.now();
+          let duration = ((end - start) / 1000).toFixed(2);
+          status.innerText = `✅ MSM: السكربت اكتمل خلال ${duration} ثانية – راقب المتصفح!`;
+        } catch (e) {
+          status.innerText = "💥 MSM: حدث خطأ – احتمال خلل أو حماية!";
+        }
+      }
+    </script>
+  </body>
+</html>
