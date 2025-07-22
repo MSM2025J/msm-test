@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>MSM WebKit Exploit v8</title>
+    <title>MSM WebKit Exploit v9</title>
     <meta charset="UTF-8" />
     <style>
       body {
-        background-color: #121212;
+        background-color: #0d0d0d;
         color: #00ccff;
         font-family: monospace;
         text-align: center;
@@ -24,20 +24,14 @@
         margin-top: 20px;
         font-size: 18px;
       }
-      svg {
-        width: 0;
-        height: 0;
-      }
     </style>
   </head>
   <body>
-    <h1>⚡ MSM WebKit Exploit v8 – ضغط متكامل</h1>
-    <button onclick="startHeap()">🔥 Heap Spray</button>
-    <button onclick="startSVG()">💥 SVG Bomb</button>
+    <h1>⚡ MSM WebKit Exploit v9 – الضغط المجنون</h1>
+    <button onclick="startMegaSpray()">🚀 ابدأ الضغط المجنون</button>
     <p id="timer">⏱️ المؤقت: 0 ثانية</p>
     <p id="counter">🔢 التكرارات: 0</p>
-    <p id="status">جاهز للتنفيذ...</p>
-    <svg id="svgbomb"></svg>
+    <p id="status">جاهز للتفجير...</p>
 
     <script>
       let seconds = 0;
@@ -60,50 +54,23 @@
         clearInterval(timerInterval);
       }
 
-      function startHeap() {
+      function startMegaSpray() {
         startTimer();
         const status = document.getElementById("status");
-        status.innerText = "⏳ MSM: بدأ Heap Spray...";
+        status.innerText = "⏳ MSM: بدأ الضغط المجنون...";
         try {
-          for (let i = 0; i < 200000; i++) {
-            let spray = new Uint32Array(16384);
+          for (let i = 0; i < 100000000; i++) {
+            let spray = new Uint32Array(1024);
             spray.fill(i);
             counter++;
-            if (i % 1000 === 0) {
+            if (i % 100000 === 0) {
               document.getElementById("counter").innerText = `🔢 التكرارات: ${counter}`;
             }
           }
-          status.innerText = "✅ MSM: انتهى Heap Spray بنجاح!";
+          status.innerText = "✅ MSM: انتهى الضغط المجنون بنجاح!";
           stopTimer();
         } catch (e) {
-          status.innerText = "💥 MSM: خطأ أثناء Heap Spray!";
-          stopTimer();
-        }
-      }
-
-      function startSVG() {
-        startTimer();
-        const status = document.getElementById("status");
-        status.innerText = "⏳ MSM: بدأ SVG Bomb...";
-        const svg = document.getElementById("svgbomb");
-        try {
-          for (let i = 0; i < 10000; i++) {
-            let rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-            rect.setAttribute("x", i);
-            rect.setAttribute("y", i);
-            rect.setAttribute("width", "1");
-            rect.setAttribute("height", "1");
-            rect.setAttribute("fill", "#00ccff");
-            svg.appendChild(rect);
-            counter++;
-            if (i % 500 === 0) {
-              document.getElementById("counter").innerText = `🔢 التكرارات: ${counter}`;
-            }
-          }
-          status.innerText = "✅ MSM: انتهى SVG Bomb بنجاح!";
-          stopTimer();
-        } catch (e) {
-          status.innerText = "💥 MSM: خطأ أثناء SVG Bomb!";
+          status.innerText = "💥 MSM: خطأ أثناء الضغط – احتمال خلل!";
           stopTimer();
         }
       }
