@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>MSM WebKit Exploit v11</title>
+    <title>MSM WebKit Exploit v15</title>
     <meta charset="UTF-8" />
     <style>
       body {
@@ -20,23 +20,27 @@
         cursor: pointer;
         margin: 10px;
       }
-      #status, #timer, #counter {
+      #status, #timer, #counter, #report {
         margin-top: 20px;
         font-size: 18px;
+        white-space: pre-wrap;
       }
     </style>
   </head>
   <body>
-    <h1>⚡ MSM WebKit Exploit v11 – الضغط الوحشي المتكامل</h1>
-    <button onclick="startMegaSpray()">🚀 ابدأ الضغط الوحشي</button>
+    <h1>⚡ MSM WebKit Exploit v15 – الضغط الفائق السرعة</h1>
+    <button onclick="startInfiniteSpray()">🚀 ابدأ الضغط الفائق</button>
+    <button onclick="saveReport()">📝 سجل النتائج</button>
     <p id="timer">⏱️ المؤقت: 0 ثانية</p>
     <p id="counter">🔢 التكرارات: 0</p>
     <p id="status">جاهز للتفجير...</p>
+    <div id="report"></div>
 
     <script>
       let seconds = 0;
-      let timerInterval = null;
       let counter = 0;
+      let timerInterval = null;
+      let sprayActive = false;
 
       function startTimer() {
         clearInterval(timerInterval);
@@ -54,29 +58,48 @@
         clearInterval(timerInterval);
       }
 
-      function startMegaSpray() {
+      function startInfiniteSpray() {
+        if (sprayActive) return;
+        sprayActive = true;
         startTimer();
         const status = document.getElementById("status");
-        status.innerText = "⏳ MSM: بدأ الضغط الوحشي...";
-        let limit = 50000000; // 50 مليون تكرار
-        let chunk = 5000;
+        status.innerText = "⏳ MSM: بدأ الضغط الفائق السرعة...";
+        let lastLagCheck = performance.now();
 
-        function sprayChunk() {
-          for (let i = 0; i < chunk; i++) {
+        function sprayLoop() {
+          for (let i = 0; i < 30000; i++) {
             let spray = new Uint32Array(2048);
             spray.fill(counter);
             counter++;
           }
+
           document.getElementById("counter").innerText = `🔢 التكرارات: ${counter}`;
-          if (counter < limit) {
-            setTimeout(sprayChunk, 5); // ضغط متدرج سريع
-          } else {
-            status.innerText = "✅ MSM: انتهى الضغط الوحشي بنجاح!";
+          let now = performance.now();
+          let delta = now - lastLagCheck;
+          lastLagCheck = now;
+
+          if (delta > 300) {
+            status.innerText = "💥 MSM: تم الكشف عن تجميد – تم إيقاف الضغط!";
             stopTimer();
+            sprayActive = false;
+            return;
           }
+
+          requestAnimationFrame(sprayLoop);
         }
 
-        sprayChunk();
+        sprayLoop();
+      }
+
+      function saveReport() {
+        const report = `
+# تقرير MSM WebKit Exploit
+- الوقت الإجمالي: ${seconds} ثانية
+- عدد التكرارات: ${counter}
+- الحالة: ${document.getElementById("status").innerText}
+-------------------------------
+`;
+        document.getElementById("report").innerText = report;
       }
     </script>
   </body>
