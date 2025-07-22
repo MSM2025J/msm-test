@@ -1,81 +1,65 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>MSM Exploit v19 – Aggressive Freeze Mode</title>
+  <title>MSM Exploit v1.2 – High Pressure Simulation</title>
   <meta charset="UTF-8" />
   <style>
     body {
-      background-color: #111;
-      color: #00ccff;
-      font-family: monospace;
       text-align: center;
-      padding-top: 80px;
+      font-family: sans-serif;
+      padding-top: 100px;
+      background-color: #1a1a1a;
+      color: #ffffff;
     }
     button {
-      padding: 14px 28px;
-      font-size: 20px;
-      background-color: #00ccff;
-      color: black;
+      padding: 12px 25px;
+      font-size: 18px;
+      background-color: #ff5555;
+      color: white;
       border: none;
-      border-radius: 12px;
+      border-radius: 10px;
       cursor: pointer;
-      box-shadow: 0 0 12px #00ccff;
-      transition: all 0.2s ease-in-out;
+      box-shadow: 0 0 10px #ff5555;
+      transition: transform 0.2s;
     }
     button:hover {
-      transform: scale(1.07);
-    }
-    #status, #counter {
-      margin-top: 30px;
-      font-size: 18px;
+      transform: scale(1.05);
     }
     #msm-sig {
-      position: fixed;
-      bottom: 10px;
-      right: 10px;
+      margin-top: 50px;
       font-size: 13px;
-      color: #444;
+      color: #777;
     }
   </style>
 </head>
 <body>
-  <h1>🧨 MSM Exploit v19 – ضغط سريع للتجميد</h1>
-  <p>اضغط الزر لتفعيل سكربت الرش المكثف وتسريع ظهور الخطأ</p>
+  <h1>🧨 MSM Exploit v1.2 – تجربة ضغط عنيف</h1>
+  <p>اضغط الزر لتفعيل سكربت الرش المكثف على DOM والذاكرة</p>
   <button onclick="simulateHeavyLoop()">🚀 ابدأ التجربة</button>
-  <p id="counter">🔁 عدد التكرارات: 0</p>
-  <p id="status">⏳ MSM: في انتظار التجميد...</p>
-  <div id="msm-sig">🧠 MSM Signature v19 – Aggressive Freeze</div>
+  <div id="msm-sig">🧠 MSM Signature v1.2 – Educational Freeze Simulation</div>
 
   <script>
     function simulateHeavyLoop() {
-      alert("⚠️ MSM: ضغط سريع – قد يتجمد المتصفح خلال ثوانٍ");
+      alert("⚠️ MSM: قد يتجمد المتصفح — هذه تجربة تعليمية مكثفة");
 
       let counter = 0;
-      const status = document.getElementById("status");
-      const counterElem = document.getElementById("counter");
+      const max = Number.MAX_SAFE_INTEGER;
 
-      function loop() {
-        for (let i = 0; i < 60000; i++) {
-          const spray = new Uint32Array(8192);
-          spray.fill(counter);
-          counter++;
+      while (counter < max) {
+        counter++;
 
-          if (counter % 50000 === 0) {
-            const el = document.createElement("div");
-            el.textContent = "🔁 MSM رش: " + counter;
-            document.body.appendChild(el);
-          }
-
-          if (counter % 250000 === 0) {
-            status.textContent = "🔥 MSM: ضغط عنيف مستمر عند " + counter;
-          }
+        // ضغط DOM كل مليون تكرار
+        if (counter % 1000000 === 0) {
+          const element = document.createElement("div");
+          element.textContent = "🔁 MSM رش رقم: " + counter;
+          document.body.appendChild(element);
         }
 
-        counterElem.textContent = "🔁 عدد التكرارات: " + counter;
-        requestAnimationFrame(loop);
+        // تسجيل نقاط الضغط الكبيرة
+        if (counter % 50000000 === 0) {
+          console.log("🔥 MSM نقطة ضغط ثقيلة:", counter);
+        }
       }
-
-      loop();
     }
   </script>
 </body>
