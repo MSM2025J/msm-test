@@ -1,82 +1,54 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>MSM Exploit v19 – Visual Freeze Style</title>
-  <meta charset="UTF-8" />
+  <title>محاكاة ضغط عالي على المتصفح</title>
   <style>
     body {
-      background-color: #111;
-      color: #00ccff;
-      font-family: monospace;
       text-align: center;
-      padding-top: 80px;
+      font-family: sans-serif;
+      padding-top: 100px;
+      background-color: #1a1a1a;
+      color: #ffffff;
     }
     button {
-      padding: 14px 28px;
-      font-size: 20px;
-      background-color: #00ccff;
-      color: black;
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
-      box-shadow: 0 0 12px #00ccff;
-      transition: all 0.2s ease-in-out;
-    }
-    button:hover {
-      transform: scale(1.07);
-    }
-    #status, #counter {
-      margin-top: 30px;
+      padding: 12px 25px;
       font-size: 18px;
-    }
-    #msm-sig {
-      position: fixed;
-      bottom: 10px;
-      right: 10px;
-      font-size: 13px;
-      color: #444;
+      background-color: #ff5555;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 0 10px #ff5555;
     }
   </style>
 </head>
 <body>
-  <h1>🧨 MSM Exploit v19 – تجربة تجميد محسوبة</h1>
-  <p>اضغط الزر لتفعيل سكربت الضغط المكثف ومراقبة التجميد</p>
-  <button onclick="simulateHeavyLoop()">🚀 بدء التجربة</button>
-  <p id="counter">🔁 عدد التكرارات: 0</p>
-  <p id="status">⏳ MSM: في انتظار التجميد...</p>
-  <div id="msm-sig">🧠 MSM Signature v19 – Visual Freeze Test</div>
+  <h1>🧪 تجربة تعليمية: ضغط عالي</h1>
+  <p>اضغط الزر لتفعيل سكربت التكرار المكثف</p>
+  <button onclick="simulateHeavyLoop()">ابدأ التجربة</button>
 
   <script>
     function simulateHeavyLoop() {
-      alert("⚠️ MSM: قد يتجمّد المتصفح خلال دقائق... التجربة بدأت");
+      alert("⚠️ قد يتجمد المتصفح — هذه تجربة تعليمية فقط");
 
       let counter = 0;
       const max = Number.MAX_SAFE_INTEGER;
-      const status = document.getElementById("status");
-      const counterElem = document.getElementById("counter");
 
-      function loop() {
-        for (let i = 0; i < 30000; i++) {
-          const spray = new Uint32Array(4096);
-          spray.fill(i);
-          counter++;
+      while (counter < max) {
+        counter++;
 
-          if (counter % 100000 === 0) {
-            const el = document.createElement("div");
-            el.textContent = "🔁 MSM رش: " + counter;
-            document.body.appendChild(el);
-          }
-
-          if (counter % 500000 === 0) {
-            status.textContent = "🔥 MSM: ضغط مستمر عند " + counter;
-          }
+        // ضغط مكثف على DOM
+        if (counter % 1000000 === 0) {
+          const element = document.createElement("div");
+          element.textContent = "ضغط رقم: " + counter;
+          document.body.appendChild(element);
         }
 
-        counterElem.textContent = "🔁 عدد التكرارات: " + counter;
-        requestAnimationFrame(loop);
+        // محاولة استهلاك الذاكرة تدريجيًا
+        if (counter % 50000000 === 0) {
+          console.log("نقطة ضغط ثقيلة:", counter);
+        }
       }
-
-      loop();
     }
   </script>
 </body>
