@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>MSM WebKit Exploit v9</title>
+    <title>MSM WebKit Exploit v10</title>
     <meta charset="UTF-8" />
     <style>
       body {
@@ -27,8 +27,8 @@
     </style>
   </head>
   <body>
-    <h1>⚡ MSM WebKit Exploit v9 – الضغط المجنون</h1>
-    <button onclick="startMegaSpray()">🚀 ابدأ الضغط المجنون</button>
+    <h1>⚡ MSM WebKit Exploit v10 – الضغط الذكي المتدرج</h1>
+    <button onclick="startSmartSpray()">🚀 ابدأ الضغط الذكي</button>
     <p id="timer">⏱️ المؤقت: 0 ثانية</p>
     <p id="counter">🔢 التكرارات: 0</p>
     <p id="status">جاهز للتفجير...</p>
@@ -37,11 +37,13 @@
       let seconds = 0;
       let timerInterval = null;
       let counter = 0;
+      let batch = 0;
 
       function startTimer() {
         clearInterval(timerInterval);
         seconds = 0;
         counter = 0;
+        batch = 0;
         document.getElementById("timer").innerText = "⏱️ المؤقت: 0 ثانية";
         document.getElementById("counter").innerText = "🔢 التكرارات: 0";
         timerInterval = setInterval(() => {
@@ -54,25 +56,30 @@
         clearInterval(timerInterval);
       }
 
-      function startMegaSpray() {
+      function startSmartSpray() {
         startTimer();
         const status = document.getElementById("status");
-        status.innerText = "⏳ MSM: بدأ الضغط المجنون...";
-        try {
-          for (let i = 0; i < 100000000; i++) {
-            let spray = new Uint32Array(1024);
-            spray.fill(i);
+        status.innerText = "⏳ MSM: بدأ الضغط الذكي...";
+        let limit = 1000000; // مليون تكرار متدرج
+        let chunk = 1000;
+
+        function sprayChunk() {
+          for (let i = 0; i < chunk; i++) {
+            let spray = new Uint32Array(2048);
+            spray.fill(counter);
             counter++;
-            if (i % 100000 === 0) {
-              document.getElementById("counter").innerText = `🔢 التكرارات: ${counter}`;
-            }
           }
-          status.innerText = "✅ MSM: انتهى الضغط المجنون بنجاح!";
-          stopTimer();
-        } catch (e) {
-          status.innerText = "💥 MSM: خطأ أثناء الضغط – احتمال خلل!";
-          stopTimer();
+          batch++;
+          document.getElementById("counter").innerText = `🔢 التكرارات: ${counter}`;
+          if (counter < limit) {
+            setTimeout(sprayChunk, 10); // تأخير بسيط لتفادي انهيار الذاكرة
+          } else {
+            status.innerText = "✅ MSM: انتهى الضغط الذكي بنجاح!";
+            stopTimer();
+          }
         }
+
+        sprayChunk();
       }
     </script>
   </body>
