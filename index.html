@@ -1,15 +1,17 @@
-<button onclick="startTest()">ابدأ الاختبار الآن</button>
-<p id="status"></p>
-
 <script>
   function startTest() {
-    alert("✅ الزر اشتغل!");
-    document.getElementById("status").innerText = "⏳ السكربت بدأ...";
-    console.log("MSM: الزر تم الضغط عليه");
-    let arr = [];
-    for (let i = 0; i < 30000; i++) {
-      arr.push(new Uint32Array(1024));
+    const status = document.getElementById("status");
+    status.innerText = "⏳ MSM: بدأ الضغط على الذاكرة...";
+    let total = 0;
+    try {
+      for (let i = 0; i < 50000; i++) {
+        let spray = new Uint32Array(2048);
+        spray.fill(i);
+        total += spray[0];
+      }
+      status.innerText = "✅ MSM: السكربت اكتمل – راقب الأداء!";
+    } catch (e) {
+      status.innerText = "💥 MSM: حدث خطأ – احتمال خلل!";
     }
-    document.getElementById("status").innerText = "✅ السكربت اكتمل – راقب المتصفح!";
   }
 </script>
