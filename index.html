@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>MSM Exploit v1.2 – High Pressure Simulation</title>
+  <title>MSM Exploit v2.1 – Private WebKit Simulation</title>
   <meta charset="UTF-8" />
   <style>
     body {
-      text-align: center;
-      font-family: sans-serif;
-      padding-top: 100px;
       background-color: #1a1a1a;
       color: #ffffff;
+      font-family: sans-serif;
+      text-align: center;
+      padding-top: 80px;
     }
     button {
       padding: 12px 25px;
@@ -20,46 +20,86 @@
       border-radius: 10px;
       cursor: pointer;
       box-shadow: 0 0 10px #ff5555;
-      transition: transform 0.2s;
+      margin: 10px;
     }
-    button:hover {
-      transform: scale(1.05);
+    #status, #counter, #leak {
+      margin-top: 20px;
+      font-size: 16px;
     }
-    #msm-sig {
-      margin-top: 50px;
+    #signature {
+      position: fixed;
+      bottom: 10px;
+      left: 10px;
       font-size: 13px;
       color: #777;
     }
   </style>
 </head>
 <body>
-  <h1>🧨 MSM Exploit v1.2 – تجربة ضغط عنيف</h1>
-  <p>اضغط الزر لتفعيل سكربت الرش المكثف على DOM والذاكرة</p>
-  <button onclick="simulateHeavyLoop()">🚀 ابدأ التجربة</button>
-  <div id="msm-sig">🧠 MSM Signature v1.2 – Educational Freeze Simulation</div>
+  <h1>MSM Exploit v2.1 – Private WebKit Simulation</h1>
+  <p>Click to initiate MSM-style heap spray and leak simulation</p>
+  <button onclick="startExploit()">Start Exploit</button>
+  <p id="counter">Iterations: 0</p>
+  <p id="status">Waiting to begin...</p>
+  <p id="leak"></p>
+  <div id="signature">MSM Private Exploit v2.1 – Do Not Mirror</div>
 
   <script>
-    function simulateHeavyLoop() {
-      alert("⚠️ MSM: قد يتجمد المتصفح — هذه تجربة تعليمية مكثفة");
+    let counter = 0;
+    let startTime = performance.now();
+    let exploitActive = false;
+    let fakeObj = { msm_id: "MSM_OBJ_Stage6_TypeX", leak: 0x5A5A5A5A };
 
-      let counter = 0;
-      const max = Number.MAX_SAFE_INTEGER;
+    function simulateMSMLeak(obj) {
+      let leak = obj.leak.toString(16);
+      document.getElementById("leak").textContent = "MSM Leak Simulation: 0x" + leak;
+    }
 
-      while (counter < max) {
-        counter++;
+    function startExploit() {
+      if (exploitActive) return;
+      exploitActive = true;
+      document.getElementById("status").textContent = "Initializing MSM heap spray...";
 
-        // ضغط DOM كل مليون تكرار
-        if (counter % 1000000 === 0) {
-          const element = document.createElement("div");
-          element.textContent = "🔁 MSM رش رقم: " + counter;
-          document.body.appendChild(element);
+      setTimeout(() => {
+        document.getElementById("status").textContent = "Injecting MSM_OBJ_Stage6_TypeX...";
+        simulateMSMLeak(fakeObj);
+        runSprayLoop();
+      }, 20000); // 20-second delay before exploit logic
+    }
+
+    function runSprayLoop() {
+      function loop() {
+        for (let i = 0; i < 30000; i++) {
+          let spray = new Uint32Array(5120);
+          spray.fill(counter);
+          counter++;
+
+          if (counter % 100000 === 0) {
+            const el = document.createElement("div");
+            el.textContent = "MSM Spray Iteration: " + counter;
+            document.body.appendChild(el);
+          }
+
+          if (counter % 500000 === 0) {
+            document.getElementById("status").textContent = "Memory pressure rising at iteration " + counter;
+          }
         }
 
-        // تسجيل نقاط الضغط الكبيرة
-        if (counter % 50000000 === 0) {
-          console.log("🔥 MSM نقطة ضغط ثقيلة:", counter);
+        document.getElementById("counter").textContent = "Iterations: " + counter;
+
+        let now = performance.now();
+        let delta = now - startTime;
+        startTime = now;
+
+        if (delta > 300) {
+          document.getElementById("status").textContent = "Exploit condition met – MSM control achieved";
+          return;
         }
+
+        requestAnimationFrame(loop);
       }
+
+      loop();
     }
   </script>
 </body>
