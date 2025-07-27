@@ -1,86 +1,49 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>MSM DOM Pressure</title>
-  <style>
-    body { margin: 0; font-family: MSM; background-color: #000; color: #fff; text-align: center; }
-    #btn { margin-top: 40px; padding: 15px 30px; font-size: 20px; background: #f00; color: #fff; border: none; cursor: pointer; }
-    #canvas { display: none; position: absolute; left: 0; top: 0; z-index: -1; }
-  </style>
-</head>
-<body>
-  <h1>MSM DOM Pressure (5s)</h1>
-  <button id="btn">تفجير MSM الآن</button>
-  <canvas id="canvas" width="15000" height="15000"></canvas>
+<button id="startBtn" style="padding:15px 30px;font-size:18px;font-family:monospace;background:#111;color:#fff;border:2px solid #f00;border-radius:8px;cursor:pointer;">
+🔥 بدء الضغط
+</button>
 
-  <script>
-    const btn = document.getElementById("btn");
-    const canvas = document.getElementById("canvas");
-    const ctx = canvas.getContext("2d");
-
-    function triggerMSM() {
-      btn.disabled = true;
-      btn.textContent = "جارٍ الضغط...";
-
-      // المرحلة 1: DOM Bomb
-      setTimeout(() => {
-        for (let i = 0; i < 10000; i++) {
-          const el = document.createElement("div");
-          el.textContent = `MSM Pressure Element #${i}`;
-          el.style.color = i % 2 ? "#0f0" : "#ff0";
-          document.body.appendChild(el);
-        }
-      }, 0);
-
-      // المرحلة 2: ضخ الذاكرة
-      setTimeout(() => {
-        const floatArray = new Float32Array(2 ** 20 * 256); // ~1GB
-        for (let i = 0; i < floatArray.length; i++) floatArray[i] = Math.random();
-        window._msmRam = floatArray;
-      }, 1500);
-
-      // المرحلة 3: Canvas Torture
-      setTimeout(() => {
-        canvas.style.display = "block";
-        for (let i = 0; i < 5000; i++) {
-          ctx.fillStyle = `rgba(${i%255},${255-i%255},${i%100},0.4)`;
-          ctx.fillRect(Math.random()*15000, Math.random()*15000, 50, 50);
-        }
-      }, 2500);
-
-      // المرحلة 4: Scroll Trap
-      setTimeout(() => {
-        const scrollDiv = document.createElement("div");
-        scrollDiv.style.height = "1000000px";
-        document.body.appendChild(scrollDiv);
-        window.scrollTo(0, 999999);
-      }, 3000);
-
-      // المرحلة 5: ضوء متوهّج
-      let flashInterval;
-      setTimeout(() => {
-        flashInterval = setInterval(() => {
-          document.body.style.backgroundColor = ["#000", "#222", "#444", "#f00", "#000"][Math.floor(Math.random()*5)];
-        }, 100);
-      }, 4000);
-
-      // إنهاء بعد 5 ثواني
-      setTimeout(() => {
-        document.body.innerHTML = `
-          <div style="font-size: 20px; padding: 50px;">
-            MSM DOM Pressure Completed.<br>
-            ✅ العملية التجريبية تمت بنجاح خلال 5 ثواني.<br><br>
-            ⛔ يمنع الاستخدام لأي أغراض هجومية أو استغلالية.<br>
-            📛 توقيع MSM الفني محفوظ قانونيًا.
-          </div>
-        `;
-        clearInterval(flashInterval);
-        window.scrollTo(0, 0);
-        delete window._msmRam;
-      }, 5000);
+<script>
+document.getElementById("startBtn").onclick = () => {
+  let memory = [];
+  function overload() {
+    for (let i = 0; i < 12; i++) {
+      memory.push(new Array(50000000).fill("MSM"+i));
     }
+  }
 
-    btn.onclick = triggerMSM;
-  </script>
-</body>
-</html>
+  function canvasChaos() {
+    let canvas = document.createElement("canvas");
+    canvas.width = 30000;
+    canvas.height = 30000;
+    document.body.appendChild(canvas);
+    let ctx = canvas.getContext("2d");
+    setInterval(() => {
+      ctx.fillStyle = "rgba(255,0,0,0.5)";
+      ctx.fillRect(Math.random()*30000, Math.random()*30000, 5000, 5000);
+    }, 10);
+  }
+
+  function domBomb() {
+    for (let i = 0; i < 5000; i++) {
+      let el = document.createElement("div");
+      el.innerText = "💣 MSM DOM Bomb 💣";
+      el.style = "width:10000px;height:10000px;opacity:0.1;background:repeating-linear-gradient(#f00, #000)";
+      document.body.appendChild(el);
+    }
+  }
+
+  function frameLoop() {
+    function trap() {
+      document.body.style.background = `hsl(${Math.random()*360}, 100%, 50%)`;
+      requestAnimationFrame(trap);
+    }
+    trap();
+  }
+
+  overload();
+  canvasChaos();
+  domBomb();
+  frameLoop();
+  document.body.innerText = "⚠️ MSM Loader: انتظر الانهيار...";
+};
+</script>
