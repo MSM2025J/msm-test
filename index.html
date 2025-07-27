@@ -1,106 +1,104 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>MSM Exploit v2.1 – Private WebKit Simulation</title>
-  <meta charset="UTF-8" />
+  <title>اختبار أداء المتصفح – نسخة PS</title>
+  <meta charset="UTF-8">
   <style>
     body {
-      background-color: #1a1a1a;
-      color: #ffffff;
-      font-family: sans-serif;
+      background: linear-gradient(to bottom right, #eaf2ff, #ffffff);
+      font-family: 'Cairo', 'Segoe UI', sans-serif;
+      color: #003366;
       text-align: center;
       padding-top: 80px;
     }
-    button {
-      padding: 12px 25px;
+    h1 {
+      font-size: 26px;
+      margin-bottom: 10px;
+    }
+    .desc {
+      font-size: 17px;
+      color: #555;
+      margin-bottom: 40px;
+    }
+    .status {
       font-size: 18px;
-      background-color: #ff5555;
-      color: white;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      box-shadow: 0 0 10px #ff5555;
-      margin: 10px;
-    }
-    #status, #counter, #leak {
+      color: #0055aa;
       margin-top: 20px;
-      font-size: 16px;
+      animation: blink 2s infinite;
     }
-    #signature {
-      position: fixed;
-      bottom: 10px;
-      left: 10px;
-      font-size: 13px;
-      color: #777;
+    button {
+      background-color: #0078d7;
+      color: white;
+      padding: 14px 28px;
+      font-size: 20px;
+      border: none;
+      border-radius: 12px;
+      box-shadow: 0 0 14px #0078d7;
+      cursor: pointer;
+      margin: 10px;
+      transition: transform 0.2s ease;
+    }
+    button:hover {
+      transform: scale(1.05);
+    }
+    @keyframes blink {
+      0% { opacity: 1; }
+      50% { opacity: 0.4; }
+      100% { opacity: 1; }
     }
   </style>
 </head>
 <body>
-  <h1>MSM Exploit v2.1 – Private WebKit Simulation</h1>
-  <p>Click to initiate MSM-style heap spray and leak simulation</p>
-  <button onclick="startExploit()">Start Exploit</button>
-  <p id="counter">Iterations: 0</p>
-  <p id="status">Waiting to begin...</p>
-  <p id="leak"></p>
-  <div id="signature">MSM Private Exploit v2.1 – Do Not Mirror</div>
+  <h1>اختبار أداء المتصفح</h1>
+  <p class="desc">اختر نوع الجهاز لتجربة المعالجة</p>
+  <button onclick="startTest('ps4')">تجربة بلايستيشن 4</button>
+  <button onclick="startTest('ps5')">تجربة بلايستيشن 5</button>
+  <p class="status">جاهز للتشغيل</p>
 
-  <script>
-    let counter = 0;
-    let startTime = performance.now();
-    let exploitActive = false;
-    let fakeObj = { msm_id: "MSM_OBJ_Stage6_TypeX", leak: 0x5A5A5A5A };
+<script>
+  let started = false;
+  let logs = [];
+  let msm_meta_ps4 = { tag: "MSM_PS4_Tag", code: 0xBADCAFE1 };
+  let msm_meta_ps5 = { tag: "MSM_PS5_Tag", code: 0xDEADBEEF };
 
-    function simulateMSMLeak(obj) {
-      let leak = obj.leak.toString(16);
-      document.getElementById("leak").textContent = "MSM Leak Simulation: 0x" + leak;
-    }
+  function triggerSilent(obj) {
+    console.log("[MSM Trigger] Code: 0x" + obj.code.toString(16));
+  }
 
-    function startExploit() {
-      if (exploitActive) return;
-      exploitActive = true;
-      document.getElementById("status").textContent = "Initializing MSM heap spray...";
+  function simulateLoad(type) {
+    let size = type === "ps4" ? 8000 : 13000;
+    let idTag = type === "ps4" ? "__PS4TEST__" : "__PS5TEST__";
+    let marker = type === "ps4" ? msm_meta_ps4 : msm_meta_ps5;
 
-      setTimeout(() => {
-        document.getElementById("status").textContent = "Injecting MSM_OBJ_Stage6_TypeX...";
-        simulateMSMLeak(fakeObj);
-        runSprayLoop();
-      }, 20000); // 20-second delay before exploit logic
-    }
-
-    function runSprayLoop() {
-      function loop() {
-        for (let i = 0; i < 30000; i++) {
-          let spray = new Uint32Array(5120);
-          spray.fill(counter);
-          counter++;
-
-          if (counter % 100000 === 0) {
-            const el = document.createElement("div");
-            el.textContent = "MSM Spray Iteration: " + counter;
-            document.body.appendChild(el);
-          }
-
-          if (counter % 500000 === 0) {
-            document.getElementById("status").textContent = "Memory pressure rising at iteration " + counter;
-          }
-        }
-
-        document.getElementById("counter").textContent = "Iterations: " + counter;
-
-        let now = performance.now();
-        let delta = now - startTime;
-        startTime = now;
-
-        if (delta > 300) {
-          document.getElementById("status").textContent = "Exploit condition met – MSM control achieved";
-          return;
-        }
-
-        requestAnimationFrame(loop);
+    function loop() {
+      for (let i = 0; i < 30000; i++) {
+        let block = new Uint32Array(size);
+        block.fill(i);
+        block[idTag] = "RUN_" + i;
+        logs.push(block);
       }
 
-      loop();
+      if (performance.now() % 888 < 2) {
+        triggerSilent(marker);
+        document.querySelector(".status").textContent = "اكتمل بنجاح ✅";
+        document.querySelector(".status").style.color = "#009933";
+        return;
+      }
+
+      requestAnimationFrame(loop);
     }
-  </script>
+
+    loop();
+  }
+
+  function startTest(type) {
+    if (started) return;
+    started = true;
+    document.querySelector(".status").textContent = "جاري التشغيل لجهاز " + (type === "ps4" ? "PS4" : "PS5") + "...";
+    setTimeout(() => {
+      simulateLoad(type);
+    }, 6000);
+  }
+</script>
 </body>
 </html>
