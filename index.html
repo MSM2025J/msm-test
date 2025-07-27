@@ -1,55 +1,86 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
   <title>MSM DOM Pressure</title>
+  <style>
+    body { margin: 0; font-family: MSM; background-color: #000; color: #fff; text-align: center; }
+    #btn { margin-top: 40px; padding: 15px 30px; font-size: 20px; background: #f00; color: #fff; border: none; cursor: pointer; }
+    #canvas { display: none; position: absolute; left: 0; top: 0; z-index: -1; }
+  </style>
 </head>
-<body style="background:#000; color:#0f0; font-family:monospace; text-align:center;">
-
-  <button id="msmBtn" style="margin-top:50px; padding:14px; font-size:16px; background:#000; color:#0f0; border:2px solid #0f0; cursor:pointer;">
-    🔥 اطلق MSM
-  </button>
+<body>
+  <h1>MSM DOM Pressure (5s)</h1>
+  <button id="btn">تفجير MSM الآن</button>
+  <canvas id="canvas" width="15000" height="15000"></canvas>
 
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const btn = document.getElementById('msmBtn');
-      btn.addEventListener('click', () => {
-        btn.style.display = 'none';
+    const btn = document.getElementById("btn");
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
 
-        // DOM تفجير
+    function triggerMSM() {
+      btn.disabled = true;
+      btn.textContent = "جارٍ الضغط...";
+
+      // المرحلة 1: DOM Bomb
+      setTimeout(() => {
+        for (let i = 0; i < 10000; i++) {
+          const el = document.createElement("div");
+          el.textContent = `MSM Pressure Element #${i}`;
+          el.style.color = i % 2 ? "#0f0" : "#ff0";
+          document.body.appendChild(el);
+        }
+      }, 0);
+
+      // المرحلة 2: ضخ الذاكرة
+      setTimeout(() => {
+        const floatArray = new Float32Array(2 ** 20 * 256); // ~1GB
+        for (let i = 0; i < floatArray.length; i++) floatArray[i] = Math.random();
+        window._msmRam = floatArray;
+      }, 1500);
+
+      // المرحلة 3: Canvas Torture
+      setTimeout(() => {
+        canvas.style.display = "block";
         for (let i = 0; i < 5000; i++) {
-          const div = document.createElement('div');
-          div.innerText = 'MSM Power';
-          div.style = `width:350px;height:350px;background:rgba(${i%255},0,255,0.2);font-size:${i%40+12}px;`;
-          document.body.appendChild(div);
+          ctx.fillStyle = `rgba(${i%255},${255-i%255},${i%100},0.4)`;
+          ctx.fillRect(Math.random()*15000, Math.random()*15000, 50, 50);
         }
+      }, 2500);
 
-        // Canvas ضخ
-        const canvas = document.createElement('canvas');
-        canvas.width = 10000;
-        canvas.height = 10000;
-        document.body.appendChild(canvas);
-        const ctx = canvas.getContext('2d');
-        for (let x = 0; x < canvas.width; x += 2) {
-          for (let y = 0; y < canvas.height; y += 2) {
-            ctx.fillStyle = `rgba(${x%255},${y%255},128,0.7)`;
-            ctx.fillRect(x, y, 2, 2);
-          }
-        }
+      // المرحلة 4: Scroll Trap
+      setTimeout(() => {
+        const scrollDiv = document.createElement("div");
+        scrollDiv.style.height = "1000000px";
+        document.body.appendChild(scrollDiv);
+        window.scrollTo(0, 999999);
+      }, 3000);
 
-        // ضخ ذاكرة
-        let overload = [];
-        for (let i = 0; i < 800; i++) {
-          overload.push(new Array(1e6).fill('MSM'));
-        }
+      // المرحلة 5: ضوء متوهّج
+      let flashInterval;
+      setTimeout(() => {
+        flashInterval = setInterval(() => {
+          document.body.style.backgroundColor = ["#000", "#222", "#444", "#f00", "#000"][Math.floor(Math.random()*5)];
+        }, 100);
+      }, 4000);
 
-        // تأثير بصري مستمر
-        setInterval(() => {
-          document.body.style.backgroundColor = `rgb(${Math.random()*255},${Math.random()*255},${Math.random()*255})`;
-        }, 25);
-      });
-    });
+      // إنهاء بعد 5 ثواني
+      setTimeout(() => {
+        document.body.innerHTML = `
+          <div style="font-size: 20px; padding: 50px;">
+            MSM DOM Pressure Completed.<br>
+            ✅ العملية التجريبية تمت بنجاح خلال 5 ثواني.<br><br>
+            ⛔ يمنع الاستخدام لأي أغراض هجومية أو استغلالية.<br>
+            📛 توقيع MSM الفني محفوظ قانونيًا.
+          </div>
+        `;
+        clearInterval(flashInterval);
+        window.scrollTo(0, 0);
+        delete window._msmRam;
+      }, 5000);
+    }
+
+    btn.onclick = triggerMSM;
   </script>
-
 </body>
 </html>
