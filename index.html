@@ -1,44 +1,20 @@
+<button id="msmPS4Btn">🧨 ضغط MSM لـ PS4</button>
+<button id="msmPS5Btn">💣 ضغط MSM لـ PS5</button>
+
 <script>
-let memory = [];
-function overload() {
-  for (let i = 0; i < 12; i++) {
-    memory.push(new Array(50_000_000).fill("MSM"+i)); // ≈ 600MB
+  function applyPressure(label, level) {
+    for (let i = 0; i < level; i++) {
+      let div = document.createElement("div");
+      div.textContent = `${label}-${i}`;
+      document.body.appendChild(div);
+    }
   }
-}
 
-function canvasChaos() {
-  let canvas = document.createElement("canvas");
-  canvas.width = 30000;
-  canvas.height = 30000;
-  document.body.appendChild(canvas);
-  let ctx = canvas.getContext("2d");
-  setInterval(() => {
-    ctx.fillStyle = `rgba(255,0,0,0.5)`;
-    ctx.fillRect(Math.random()*30000, Math.random()*30000, 5000, 5000);
-  }, 10);
-}
+  document.getElementById("msmPS4Btn").addEventListener("click", () => {
+    applyPressure("MSM-PS4", 5200); // ضغط مخصص لـ PS4 🔥
+  });
 
-function domBomb() {
-  for (let i = 0; i < 5000; i++) {
-    let el = document.createElement("div");
-    el.innerText = "💣 MSM DOM Bomb 💣";
-    el.style = "width:10000px;height:10000px;opacity:0.1;background:repeating-linear-gradient(#f00, #000)";
-    document.body.appendChild(el);
-  }
-}
-
-function frameLoop() {
-  function trap() {
-    document.body.style.background = `hsl(${Math.random()*360}, 100%, 50%)`;
-    requestAnimationFrame(trap);
-  }
-  trap();
-}
-
-// تشغيل فوري:
-overload();
-canvasChaos();
-domBomb();
-frameLoop();
-document.body.innerText = "⚠️ MSM Loader: انتظر الانهيار...";
+  document.getElementById("msmPS5Btn").addEventListener("click", () => {
+    applyPressure("MSM-PS5", 5500); // ضغط مخصص لـ PS5 💥
+  });
 </script>
