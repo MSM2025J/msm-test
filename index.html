@@ -1,20 +1,72 @@
-<button id="msmPS4Btn">🧨 ضغط MSM لـ PS4</button>
-<button id="msmPS5Btn">💣 ضغط MSM لـ PS5</button>
-
-<script>
-  function applyPressure(label, level) {
-    for (let i = 0; i < level; i++) {
-      let div = document.createElement("div");
-      div.textContent = `${label}-${i}`;
-      document.body.appendChild(div);
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>MSM DOM Pressure</title>
+  <style>
+    body {
+      background: #111;
+      color: #0f0;
+      font-family: monospace;
+      text-align: center;
+      padding-top: 50px;
     }
-  }
+    button {
+      padding: 15px 30px;
+      font-size: 18px;
+      background: #0f0;
+      color: #000;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+      box-shadow: 0 0 10px #0f0;
+    }
+    .warning {
+      margin-top: 20px;
+      padding: 15px;
+      border: 2px dashed #f00;
+      color: #f00;
+      background: #222;
+      display: none;
+    }
+  </style>
+</head>
+<body>
 
-  document.getElementById("msmPS4Btn").addEventListener("click", () => {
-    applyPressure("MSM-PS4", 5200); // ضغط مخصص لـ PS4 🔥
-  });
+  <h1>🧪 MSM DOM Pressure Test</h1>
+  <button onclick="startPressure()">ابدأ تجربة الضغط</button>
 
-  document.getElementById("msmPS5Btn").addEventListener("click", () => {
-    applyPressure("MSM-PS5", 5500); // ضغط مخصص لـ PS5 💥
-  });
-</script>
+  <div class="warning" id="warningMsg">
+    ⚠️ تجربة غير هجومية. هذا السكربت مخصص لاختبار DOM تحت الضغط لأغراض تعليمية وتقنية فقط، ضمن بيئة آمنة.
+  </div>
+
+  <script>
+    function startPressure() {
+      // عرض الرسالة القانونية
+      document.getElementById("warningMsg").style.display = "block";
+
+      // الضغط الفني على DOM
+      for (let i = 0; i < 1000; i++) {
+        let el = document.createElement("div");
+        el.textContent = "💥 MSM PRESSURE #" + i;
+        el.style.cssText = "color:#0f0;background:#000;padding:5px;margin:2px;";
+        document.body.appendChild(el);
+      }
+
+      // رسم وهمي مستمر على canvas
+      const canvas = document.createElement("canvas");
+      canvas.width = window.innerWidth;
+      canvas.height = 200;
+      document.body.appendChild(canvas);
+      const ctx = canvas.getContext("2d");
+      let angle = 0;
+      setInterval(() => {
+        ctx.fillStyle = `hsl(${angle % 360}, 100%, 50%)`;
+        ctx.fillRect(Math.random() * canvas.width, Math.random() * canvas.height, 20, 20);
+        angle += 10;
+      }, 50);
+    }
+  </script>
+
+</body>
+</html>
