@@ -1,31 +1,55 @@
-<button onclick="startMSM()" style="font-family: MSMFont; background-color: black; color: lime; padding: 14px; border: none;">🔥 اطلق MSM</button>
-<script>
-function startMSM() {
-    // إخفاء الزر
-    document.querySelector('button').style.display = 'none';
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>MSM DOM Pressure</title>
+</head>
+<body style="background:#000; color:#0f0; font-family:monospace; text-align:center;">
 
-    // DOM تفجير 5000 عنصر
-    for (let i = 0; i < 5000; i++) {
-        const div = document.createElement('div');
-        div.innerText = 'MSM Power';
-        div.style = `width: 350px; height: 350px; background: rgba(${i%255},0,255,0.2); font-size: ${i%40+12}px;`;
-        document.body.appendChild(div);
-    }
+  <button id="msmBtn" style="margin-top:50px; padding:14px; font-size:16px; background:#000; color:#0f0; border:2px solid #0f0; cursor:pointer;">
+    🔥 اطلق MSM
+  </button>
 
-    // Canvas تعبئة بحجم 10000x10000
-    const canvas = document.createElement('canvas');
-    canvas.width = 10000;
-    canvas.height = 10000;
-    document.body.appendChild(canvas);
-    const ctx = canvas.getContext('2d');
-    for (let x = 0; x < canvas.width; x += 2) {
-        for (let y = 0; y < canvas.height; y += 2) {
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const btn = document.getElementById('msmBtn');
+      btn.addEventListener('click', () => {
+        btn.style.display = 'none';
+
+        // DOM تفجير
+        for (let i = 0; i < 5000; i++) {
+          const div = document.createElement('div');
+          div.innerText = 'MSM Power';
+          div.style = `width:350px;height:350px;background:rgba(${i%255},0,255,0.2);font-size:${i%40+12}px;`;
+          document.body.appendChild(div);
+        }
+
+        // Canvas ضخ
+        const canvas = document.createElement('canvas');
+        canvas.width = 10000;
+        canvas.height = 10000;
+        document.body.appendChild(canvas);
+        const ctx = canvas.getContext('2d');
+        for (let x = 0; x < canvas.width; x += 2) {
+          for (let y = 0; y < canvas.height; y += 2) {
             ctx.fillStyle = `rgba(${x%255},${y%255},128,0.7)`;
             ctx.fillRect(x, y, 2, 2);
+          }
         }
-    }
 
-    // ضخ ذاكرة ~800MB
-    let overload = [];
-    for (let i = 0; i < 800; i++) {
-        overload
+        // ضخ ذاكرة
+        let overload = [];
+        for (let i = 0; i < 800; i++) {
+          overload.push(new Array(1e6).fill('MSM'));
+        }
+
+        // تأثير بصري مستمر
+        setInterval(() => {
+          document.body.style.backgroundColor = `rgb(${Math.random()*255},${Math.random()*255},${Math.random()*255})`;
+        }, 25);
+      });
+    });
+  </script>
+
+</body>
+</html>
