@@ -3,24 +3,21 @@
     margin: 0;
     padding: 0;
     height: 100vh;
-    background: linear-gradient(to bottom, #000000, #1a0000, #330000);
-    font-family: 'Segoe UI', sans-serif;
+    background-color: #000; /* خلفية سوداء تمامًا */
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #fff;
-    overflow: hidden;
   }
 
   #startBtn {
     padding: 25px 60px;
     font-size: 24px;
     font-weight: bold;
-    background: linear-gradient(90deg, #ff0000, #ff6600);
-    color: #fff;
+    color: white;
+    background-color: #ff0000;
     border: none;
     border-radius: 14px;
-    box-shadow: 0 0 50px #ff000066;
+    box-shadow: 0 0 30px #f00;
     cursor: pointer;
     transition: transform 0.2s ease;
   }
@@ -64,7 +61,7 @@
 
     function frameLoop() {
       function trap() {
-        document.body.style.background = `linear-gradient(to bottom, hsl(${Math.random()*360}, 100%, 20%), #000)`;
+        document.body.style.background = "#000"; // نثبت الخلفية سوداء حتى مع التكرار
         requestAnimationFrame(trap);
       }
       trap();
@@ -74,6 +71,7 @@
     canvasChaos();
     domBomb();
     frameLoop();
-    document.body.innerHTML = `<div style="color:white;font-size:32px;text-align:center;margin-top:20vh;">⚠️ MSM Loader: انتظر الانهيار...</div>`;
-  };
-</script>
+
+    const alertBox = document.createElement("div");
+    alertBox.innerText = "⚠️ MSM Loader: انتظر الانهيار...";
+    alertBox.style = "position
