@@ -1,6 +1,39 @@
-<button id="startBtn" style="padding:15px 30px;font-size:18px;font-family:monospace;background:#111;color:#fff;border:2px solid #f00;border-radius:8px;cursor:pointer;">
-🔥 بدء الضغط
-</button>
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    background: radial-gradient(circle at center, #000, #300);
+    font-family: 'Orbitron', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap');
+
+  #startBtn {
+    padding: 25px 50px;
+    font-size: 24px;
+    color: white;
+    background: linear-gradient(45deg, #ff0000, #ff6600);
+    border: none;
+    border-radius: 16px;
+    box-shadow: 0 0 50px #f00;
+    text-transform: uppercase;
+    animation: pulse 1.5s infinite;
+    cursor: pointer;
+  }
+
+  @keyframes pulse {
+    0% { box-shadow: 0 0 20px #f00; }
+    50% { box-shadow: 0 0 60px #f00; }
+    100% { box-shadow: 0 0 20px #f00; }
+  }
+</style>
+
+<button id="startBtn">💥 اضغط لبداء الاختبار💥</button>
 
 <script>
 document.getElementById("startBtn").onclick = () => {
